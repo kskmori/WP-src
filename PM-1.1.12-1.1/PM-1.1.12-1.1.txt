@@ -36,7 +36,7 @@ Pacemaker-1.1.12-1.1を使った具体的な構成例・利用手順について
 Pacemaker-1.1.12-1.1リポジトリパッケージのリリース版は以下のページよりダウンロードできます。
 
 * http://osdn.jp/projects/linux-ha/releases/62369[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.12-1.1]
-* http://osdn.jp/projects/linux-ha/releases/63397[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.12-1.1]
+* http://osdn.jp/projects/linux-ha/releases/63398[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.12-1.1]
 
 * 対応環境: RHEL 6/7 および互換OS、x86_64環境
 
