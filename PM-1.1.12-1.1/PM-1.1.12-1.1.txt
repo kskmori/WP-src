@@ -1,8 +1,15 @@
 = Pacemaker-1.1.12-1.1 リポジトリパッケージ
 
-_2014.12.05_
+Pacemaker-1.1.12-1.1 リポジトリパッケージの簡単な使い方の説明です。
 
-Pacemaker-1.1.12-1.1 リポジトリパッケージをリリースします!
+*2015.06.12 にRHEL 7用のリポジトリパッケージもリリースしました!*
+
+
+このページの変更履歴
+
+* _2014.12.05 Pacemaker-1.1.12-1.1(RHEL 6用)リポジトリパッケージリリース_
+* _2015.06.12 Pacemaker-1.1.12-1.1(RHEL 7用)リポジトリパッケージリリース_
+** RHEL 7用の設定例を追記。合わせて RHEL 6の soft_margin 設定例も変更。
 
 
 == Pacemaker-1.1.12-1.1 の概要
@@ -20,16 +27,18 @@ Pacemaker-1.1.12-1.1 リポジトリパッケージは、従来の Pacemaker-1.0
 
 Pacemaker-1.1.12-1.1を使った具体的な構成例・利用手順については、以下のOSCのセミナー資料が非常に参考になります。
 
-* http://linux-ha.sourceforge.jp/wp/archives/4038[OSC2014 Tokyo/Fall セミナー資料公開]
+* http://linux-ha.osdn.jp/wp/archives/4038[OSC2014 Tokyo/Fall セミナー資料・アンケート結果公開]
+* http://linux-ha.osdn.jp/wp/archives/4075[OSC2015 Tokyo/Spring セミナー資料・アンケート結果公開]
 
 
 == ダウンロード
 
 Pacemaker-1.1.12-1.1リポジトリパッケージのリリース版は以下のページよりダウンロードできます。
 
-* http://sourceforge.jp/projects/linux-ha/releases/62369[Pacemakerリポジトリパッケージ (RHEL6) 1.1.12-1.1]
+* http://osdn.jp/projects/linux-ha/releases/62369[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.12-1.1]
+* http://osdn.jp/projects/linux-ha/releases/63397[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.12-1.1]
 
-* 対応環境: RHEL6および互換OS、x86_64環境
+* 対応環境: RHEL 6/7 および互換OS、x86_64環境
 
 
 == インストール
@@ -112,22 +121,38 @@ corosyncの認証を行うための認証鍵ファイルを作成します。
 Pacemakerの内部プロセスが故障した場合もノード故障として取り扱う
 ようにするため、以下の設定を追加します。
 
+記述内容は RHEL 6(Upstart 利用)と RHEL 7(systemd 利用)で異なります。
+
+==== pacemaker設定ファイルの設定(RHEL 6用)
 */etc/sysconfig/pacemaker (追加設定行)*::
 ----------------------------------------------------------------
-export PCMK_fail_fast=yes 
+export PCMK_fail_fast=yes
+----------------------------------------------------------------
+
+==== pacemaker設定ファイルの設定(RHEL 7用)
+*/etc/sysconfig/pacemaker (追加設定行)*::
+----------------------------------------------------------------
+PCMK_fail_fast=yes
 ----------------------------------------------------------------
 
 === クラスタ起動スクリプトの設定
 
-以下の設定を行うため、クラスタ起動スクリプトの一部を修正します。
+故障時の動作等のカスタマイズのためクラスタ起動スクリプトを一部修正します。
+
+修正する内容は RHEL 6(Upstart 利用)と RHEL 7(systemd 利用)で異なります。
+
+==== クラスタ起動スクリプトの設定(RHEL 6用)
+
+RHEL 6では、以下の設定を行うためクラスタ起動スクリプトの一部を修正します。
 
 * ノードのshutdown時にPacemakerを正しく停止するため
 * hardware watchdog が利用可能な環境では hardware watchdogを利用可能にするため
 * corosyncプロセス故障時に watchdog 機能を有効にするため
+* corosyncプロセス故障検知を迅速(6秒以内)に行うため
 
 以下に修正箇所を示します。
 
-*/etc/init/pacemaker.combined.conf (修正箇所のみ)*::
+*/etc/init/pacemaker.combined.conf (修正箇所抜粋)*::
 ----------------------------------------------------------------
 --- pacemaker.combined.conf.org	2014-10-14 11:17:24.498010606 +0900
 +++ pacemaker.combined.conf	2014-10-14 11:19:10.079010163 +0900
@@ -144,7 +169,7 @@ export PCMK_fail_fast=yes
      # setup the software watchdog which corosync uses.
      # rewrite according to environment.
 -    modprobe softdog soft_margin=60
-+    [ -c /dev/watchdog ] || modprobe softdog soft_margin=60
++    [ -c /dev/watchdog ] || modprobe softdog soft_margin=6
      pidof corosync || start corosync
  
      # if you use corosync-notifyd, uncomment the line below.
@@ -160,19 +185,86 @@ export PCMK_fail_fast=yes
 ----------------------------------------------------------------
 
 
+==== クラスタ起動スクリプトの設定(RHEL 7用)
+
+RHEL 7では、以下の設定を行うためクラスタ起動スクリプト(systemd の Unitファイル)の一部を修正します。
+
+* pacemakerサービス停止時に corosyncサービスも同時に停止させるため
+* corosyncプロセス故障時に watchdog 機能を有効にするため
+* corosyncプロセス故障検知を迅速(6秒以内)に行うため
+
+修正は、Unitファイルをパッケージ標準ディレクトリ(/usr/lib/systemd/system/)からローカル設定用ディレクトリ(/etc/systemd/system/)にコピーして修正します。
+
+以下に修正箇所を示します。
+
+*/etc/systemd/system/corosync.service (修正箇所抜粋)*::
+----------------------------------------------------------------
+# cp -p /usr/lib/systemd/system/corosync.service /etc/systemd/system
+# vi /etc/systemd/system/corosync.service
+
+--- /usr/lib/systemd/system/corosync.service	2015-05-28 15:32:09.000000000 +0900
++++ /etc/systemd/system/corosync.service	2015-06-08 15:36:15.664000000 +0900
+@@ -15,11 +15,11 @@
+ #  pacemaker.service, and if you want to exert the watchdog when a
+ #  corosync process is terminated abnormally,
+ #  uncomment the line of the following Restart= and RestartSec=.
+-#Restart=on-failure
++Restart=on-failure
+ #  Specify a period longer than soft_margin as RestartSec.
+-#RestartSec=70
++RestartSec=70
+ #  rewrite according to environment.
+-#ExecStartPre=/sbin/modprobe softdog soft_margin=60
++ExecStartPre=/sbin/modprobe softdog soft_margin=6
+ 
+ [Install]
+ WantedBy=multi-user.target
+----------------------------------------------------------------
+
+*/etc/systemd/system/pacemaker.service (修正箇所抜粋)*::
+----------------------------------------------------------------
+# cp -p /usr/lib/systemd/system/pacemaker.service /etc/systemd/system
+# vi /etc/systemd/system/pacemaker.service
+
+--- /usr/lib/systemd/system/pacemaker.service	2015-05-29 17:30:30.000000000 +0900
++++ /etc/systemd/system/pacemaker.service	2015-06-08 15:35:12.594000000 +0900
+@@ -43,7 +43,7 @@
+ # If you want Corosync to stop whenever Pacemaker is stopped,
+ # uncomment the next line too:
+ #
+-# ExecStopPost=/bin/sh -c 'pidof crmd || killall -TERM corosync'
++ExecStopPost=/bin/sh -c 'pidof crmd || killall -TERM corosync'
+ 
+ # Uncomment this for older versions of systemd that didn't support
+ # TimeoutStopSec
+----------------------------------------------------------------
+
+
 == 起動・終了
+
+起動コマンドは Pacemaker-1.0系とは異なり、Upstart経由(RHEL 6の場合)
+または systemd経由(RHEL 7の場合)で起動する手順が推奨です。
+
+このため、RHEL 6とRHEL 7で Pacemaker の起動・終了コマンドが異なります。
+
 
 === 起動コマンド
 
-Pacemakerを起動するには以下のコマンドを実行します。
+Pacemakerを起動するには以下のコマンドを実行します。クラスタを構成する全てのノードで実行してください。
 
-起動コマンドは Pacemaker-1.0系とは異なり、
-Upstart経由(RHEL6の場合)で起動する手順が推奨です。
-
+==== 起動コマンド(RHEL 6用)
 
 ----------------------------------------------------------------
 # initctl start pacemaker.combined
 ----------------------------------------------------------------
+
+==== 起動コマンド(RHEL 7用)
+
+----------------------------------------------------------------
+# systemctl start pacemaker
+----------------------------------------------------------------
+
+=== 起動確認コマンド
 
 正常に起動すると、+crm_mon+ コマンドの表示でノードが Online 状態となります。
 
@@ -185,12 +277,19 @@ Online: [ node1 node2 ]
 
 === 終了コマンド
 
-Pacemakerを停止するには以下のコマンドを実行します。
+Pacemakerを停止するには以下のコマンドを実行します。クラスタを構成する全てのノードで実行してください。
+
+==== 終了コマンド (RHEL 6用)
 
 ----------------------------------------------------------------
 # initctl stop pacemaker.combined
 ----------------------------------------------------------------
 
+==== 終了コマンド (RHEL 7用)
+
+----------------------------------------------------------------
+# systemctl stop pacemaker
+----------------------------------------------------------------
 
 
 == アンインストール
