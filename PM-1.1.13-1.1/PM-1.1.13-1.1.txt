@@ -358,6 +358,7 @@ Pacemaker-1.1.12-1.1からの主な差分について記載します。
 ** Upstart起動スクリプト(+pacemaker.combined+)に対して、+stop on runlevel+ の追加設定が不要となりました。
 ** ログをsyslogへ出力する場合、環境変数設定(+/etc/sysconfig/pacemaker+)において +HA_LOGFACILITY+ の追加設定が不要となりました。(+PCMK_logfacility+ の設定のみで設定可能となりました)
 ** +PCMK_fail_fast+ 有効時のpacemakerプロセス故障後の動作が「サーバhalt」から「サーバreboot」に変更になりました。
+** pacemaker-doc パッケージに生成ドキュメントが全て含まれるようになりました。
 * resource-agents-3.9.6-1
 ** +pgsql+: PostgreSQL 9.3 で変更された +unix_socket_directories+ パラメタに対応しました。
 ** +ldirectord+: systemd 経由で起動する場合の不具合が修正されました。
