@@ -9,8 +9,9 @@ Pacemaker-1.1.13-1.1 リポジトリパッケージをリリースしました�
 
 このページの変更履歴
 
-* _2015.10.16 Pacemaker-1.1.13-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース_
-
+* 2015.10.16 Pacemaker-1.1.13-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
+* 2015.11.13 RHEL6パッケージの動作環境について追記
+* _2015.12.18 RHEL6.5以前の環境での必須Errataについて追記_
 
 == Pacemaker-1.1.13-1.1 の概要
 
@@ -35,8 +36,9 @@ Pacemaker-1.1.13-1.1リポジトリパッケージのリリース版は以下の
 * https://osdn.jp/projects/linux-ha/releases/63918[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.13-1.1]
 * https://osdn.jp/projects/linux-ha/releases/63919[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.13-1.1]
 
-* 対応環境: RHEL 6/7 および互換OS、x86_64環境
-
+* 対応環境: RHEL 6 / RHEL 7 および互換OS、x86_64環境
+* _※ RHEL 6.5以前の環境では、以下の Errata 適用が必須です。(<<changelog,「1.1.12-1.1 からの主な差分」>>参照)_
+** https://rhn.redhat.com/errata/RHBA-2014-1538.html[RHBA-2014:1538-1 glib2 bug fix and enhancement update]
 
 == インストール
 
@@ -381,5 +383,11 @@ Pacemaker-1.1.12-1.1からの主な差分について記載します。
 * fence-agents-4.0.19-1
 ** compute(Nova computeノード)用および ilo-ssh 用のエージェントが追加されました。
 ** RHEL6上での互換性のため、+fence_kdump_send+ コマンドを +/usr/sbin+ へインストールするようになりました。
+
+* Errata https://rhn.redhat.com/errata/RHBA-2014-1538.html[RHBA-2014:1538-1] について
+** RHEL6.5以前の環境ではこのErrataの適用が必須です。(RHEL6.6以降では不要です)
+** このErrata適用により下記の不具合が解消されます。
+*** RHEL6.5環境でPacemakerの起動に失敗する。(https://bugzilla.redhat.com/show_bug.cgi?id=1113189[BZ #1113189])
+*** 運用中に大きな時刻補正を行うとリソース監視タイムアウトが発生する。(https://bugzilla.redhat.com/show_bug.cgi?id=1139977[BZ #1139977] Statusはopenのままですが、このErrataで解消されることを確認済です)
 
 以上です。

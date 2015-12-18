@@ -7,9 +7,10 @@ Pacemaker-1.1.12-1.1 リポジトリパッケージの簡単な使い方の説�
 
 このページの変更履歴
 
-* _2014.12.05 Pacemaker-1.1.12-1.1(RHEL 6用)リポジトリパッケージリリース_
-* _2015.06.12 Pacemaker-1.1.12-1.1(RHEL 7用)リポジトリパッケージリリース_
+* 2014.12.05 Pacemaker-1.1.12-1.1(RHEL 6用)リポジトリパッケージリリース
+* 2015.06.12 Pacemaker-1.1.12-1.1(RHEL 7用)リポジトリパッケージリリース
 ** RHEL 7用の設定例を追記。合わせて RHEL 6の soft_margin 設定例も変更。
+* _2015.12.18 RHEL6.5以前の環境での推奨Errataについて追記_
 
 
 == Pacemaker-1.1.12-1.1 の概要
@@ -38,7 +39,9 @@ Pacemaker-1.1.12-1.1リポジトリパッケージのリリース版は以下の
 * http://osdn.jp/projects/linux-ha/releases/62369[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.12-1.1]
 * http://osdn.jp/projects/linux-ha/releases/63398[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.12-1.1]
 
-* 対応環境: RHEL 6/7 および互換OS、x86_64環境
+* 対応環境: RHEL 6 / RHEL 7 および互換OS、x86_64環境
+* _※ RHEL 6.5以前の環境では、以下の Errata 適用を推奨します。(<<releasenotes,補足>>参照)_
+** https://rhn.redhat.com/errata/RHBA-2014-1538.html[RHBA-2014:1538-1 glib2 bug fix and enhancement update]
 
 
 == インストール
@@ -311,6 +314,7 @@ pm_crmgen pm_logconv-cs pm_diskd pm_extras crmsh pssh
 ----------------------------------------------------------------
 
 
+[[releasenotes]]
 == リポジトリパッケージ内容
 
 リポジトリパッケージには以下のパッケージが含まれています。
@@ -340,5 +344,10 @@ pm_crmgen pm_logconv-cs pm_diskd pm_extras crmsh pssh
 ** Heartbeatは今後非推奨とするためパッケージには含みません。
 ** pcs は本パッケージでは Pacemaker の設定にのみ利用可能です。Corosyncの設定には利用できません。     
 ** 1.0.13リポジトリパッケージに含まれていた pm_kvm_tools, vm-ctl コンポーネントは本バージョンには対応していないためパッケージには含みません。
+
+** Errata https://rhn.redhat.com/errata/RHBA-2014-1538.html[RHBA-2014:1538-1] について
+*** RHEL6.5以前の環境ではこのErrataの適用を推奨します。(RHEL6.6以降では不要です)
+*** このErrata適用により下記の不具合が解消されます。
+**** 運用中に大きな時刻補正を行うとリソース監視タイムアウトが発生する。(https://bugzilla.redhat.com/show_bug.cgi?id=1139977[BZ #1139977] Statusはopenのままですが、このErrataで解消されることを確認済です)
 
 以上です。
