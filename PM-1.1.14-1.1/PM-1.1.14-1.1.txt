@@ -6,7 +6,7 @@ Pacemaker-1.1.14-1.1 リポジトリパッケージをリリースしました�
 
 このページの変更履歴
 
-* 2016.07.XX Pacemaker-1.1.14-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
+* 2016.07.22 Pacemaker-1.1.14-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
 
 == Pacemaker-1.1.14-1.1 の概要
 
@@ -15,7 +15,7 @@ Pacemaker-1.1.14-1.1 リポジトリパッケージは、前回のリリース�
 
 利用方法は従来の 1.1.13-1.1 までとほぼ同じ使い方が可能ですが、一点だけ、Corosync のネットワークインタフェース冗長化設定において従来の設定がそのまま使えない箇所があります(<<config-corosync,「corosync設定ファイルの設定」>>の項参照)。
 
-その他の差分・改善点については<<changelog,「1.1.13-1.1 からの主な差分」>>の項を参照してください。
+その他の差分・改善点・既知の不具合については<<changelog,「1.1.13-1.1 からの主な差分」>>、<<knownissues,「既知の不具合」>>の項を参照してください。
 
 より具体的な構成例・利用手順については、以下のOSCのセミナー資料が非常に参考になります。
 これらのセミナー資料は Pacemaker-1.1.12-1.1を使った例ですが、<<config-corosync,「corosync設定ファイルの設定」>>、<<config-init,「クラスタ起動スクリプトの設定」>>の差分に注意してもらえればそのまま適用可能です。
@@ -28,8 +28,8 @@ Pacemaker-1.1.14-1.1 リポジトリパッケージは、前回のリリース�
 
 Pacemaker-1.1.14-1.1リポジトリパッケージのリリース版は以下のページよりダウンロードできます。
 
-* https://osdn.jp/projects/linux-ha/releases/XXXXX[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.14-1.1]
-* https://osdn.jp/projects/linux-ha/releases/YYYYY[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.14-1.1]
+* https://osdn.jp/projects/linux-ha/releases/66140[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.14-1.1]
+* https://osdn.jp/projects/linux-ha/releases/66141[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.14-1.1]
 
 * 対応環境: RHEL 6 / RHEL 7 および互換OS、x86_64環境
 * _※ RHEL 6.5以前の環境では、以下の Errata 適用が必須です。_
@@ -354,8 +354,8 @@ pm_crmgen pm_logconv-cs pm_diskd pm_extras crmsh pssh
 * 補足
 ** Heartbeatは今後非推奨とするためパッケージには含みません。
 ** ユーザインタフェースとして crmsh, pcs の2種類のコンポーネントを同梱していますが、1.0系と同様 crmsh の利用を推奨します。
-** crmsh の機能のうち、pssh を利用する一部の機能(crm resource secret等)は利用できません(コミュニティ版psshの制約による)。将来のバージョンアップ(crmsh-2.2系以降)で改善を検討します。 
-** pcs は本パッケージでは「テクノロジープレビュー」の位置付けで添付しており、実用目的の利用は推奨しません。また利用する場合はさらに依存パッケージの追加インストールが必要です。
+** crmsh の機能のうち、pssh を利用する一部の機能(crm resource secret, crm cluster 等)は利用できません(コミュニティ版psshの制約による)。将来のバージョンアップ(crmsh-2.2系以降)で改善を検討します。 
+** pcs は本パッケージでは「テクノロジープレビュー」(お試し版)の位置付けで添付しており、実用目的の利用は推奨しません。また利用する場合はさらに依存パッケージの追加インストールが必要です。
 ** STONITHプラグインとして cluster-glue, fence-agents の2種類のコンポーネントを同梱していますが、1.0系と同様 cluster-glue に含まれるSTONITHプラグインの利用を推奨します。
 ** 1.0.13リポジトリパッケージに含まれていた pm_kvm_tools, vm-ctl コンポーネントは本バージョンには対応していないためパッケージには含みません。
 
@@ -387,11 +387,9 @@ Pacemaker-1.1.13-1.1からの主な差分について記載します。
 ** fence_ec2: AWS EC2用STONITHプラグインが追加されました。
 
 * resource-agents-3.9.7-1
-** mysql: プロセス故障発生直後にPacemaker停止を行うと不要なSTONITHが発生する不具合が修正されました。
-** pgsql: xlog_check_count等のパラメタのデフォルト値が正しく表示されない不具合が修正されました。
-** pgsql: stop_escalate_in_slave パラメタの設定値がログメッセージ中に正しく出力されない不具合が修正されました。
-** pgsql: replication_slot_name パラメタに利用不可能な文字を設定した場合でも適切に対応できるように修正されました。
-** nfsserver: nfsdプロセス故障が検知できない不具合が修正されました。
+** mysql: プロセス故障発生直後に Pacemaker 停止を行うと不要な STONITH が発生する不具合が修正されました。
+** pgsql: 一部のパラメタについて、軽微なログ表示上の誤りやエラーチェックなどが改善されました(xlog_check_count, stop_escalate_in_slave, replication_slot_name 等)。
+** nfsserver: nfsd プロセス故障が検知できない不具合が修正されました。
 
 * pm_diskd-2.2-1
 ** I/O高負荷の状況下における故障の誤検知発生を抑制するため監視処理のキャッシュクリア処理を見直しました。
@@ -403,6 +401,23 @@ Pacemaker-1.1.13-1.1からの主な差分について記載します。
 * pcs-0.9.149-1
 ** 最新版に追随しました。
 * fence-agents-4.0.22-1
-** vbox用、docker 用などのエージェントが追加されました。
+** vbox 用、docker 用などのエージェントが追加されました。
+
+[[knownissues]]
+=== 既知の不具合
+
+Pacemaker-1.1.14-1.1 には以下の既知の不具合があります。
+これらの事象は Pacemaker-1.1.14-1.1 でのみ発生する不具合です。
+1.1.13-1.1 以前では発生せず、また将来のバージョン(1.1.15-1.1 以降)で解消される見込みです。
+
+* pacemaker-1.1.14-1
+** pacemakerd プロセス故障発生時に、ノード再起動およびフェイルオーバが発生する。
+*** 本来期待される動作では、 pacemakerd プロセスのみの再起動が実行されフェイルオーバは発生しません。
+*** なお、pacemakerd 以外の内部プロセス(corosync, crmd等)故障時には、ノード再起動およびフェイルオーバが発生します。これは仕様通りです。
+** 故障ノードの Pacemaker を停止した後に crm_mon に Failed Actions が残る。
+*** 本来期待される動作では、Pacemaker停止時に Failed Actions の表示が消えます。
+*** crm_mon の表示上の問題のみであり動作に影響はありません。
+*** 残存した表示は、故障ノードを復旧させ再度 Pacemaker を起動した後に消去されます。
+
 
 以上です。
