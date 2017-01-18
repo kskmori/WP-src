@@ -4,10 +4,12 @@
 
 SRCFILE=PM-1.1.14-1.1.txt
 
+PROXY ?= $(shell echo ${http_proxy} | cut -d '/' -f 3 )
+
 # make sure that you have correctly configured ~/.blogpost
 BLOGPOST=blogpost.py
-BLOGPOST_OPTS=--force -u --proxy=172.19.0.3:8080
-#BLOGPOST_OPTS=--force -U --proxy=172.19.0.3:8080
+BLOGPOST_OPTS=--force -u --proxy=$(PROXY)
+#BLOGPOST_OPTS=--force -U --proxy=$(PROXY)
 
 ASCIIDOC_OPTS=-a toc -a icons -a iconsdir=/images/icons -a numbered
 
