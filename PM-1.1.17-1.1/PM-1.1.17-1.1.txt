@@ -6,7 +6,7 @@ Pacemaker-1.1.17-1.1 リポジトリパッケージをリリースしました�
 
 このページの変更履歴
 
-* 2017.XX.XX Pacemaker-1.1.17-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
+* 2017.02.14 Pacemaker-1.1.17-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
 
 == Pacemaker-1.1.17-1.1 の概要
 
@@ -17,22 +17,17 @@ Pacemaker-1.1.17-1.1 リポジトリパッケージは、前回のリリース�
 
 その他の主な差分・改善点については<<changelog,「1.1.16-1.1 からの主な差分」>>の項を参照してください。
 
-また本ページに記載している構築手順を自動化した Ansible Playbook の例を併せて公開していますので、ぜひご参考ください(<<ansible,「Ansible Playbook 例」>>の項参照)。
+また本ページに記載している構築手順を自動化した Ansible Playbook の例を併せて公開していますので、ぜひご参考ください(<<ansible,「Ansible Playbook 例」>>の章参照)。
 
-より具体的な構成例・利用手順については、以下のOSCのセミナー資料が非常に参考になります。
-これらのセミナー資料は Pacemaker-1.1.12-1.1を使った例ですが、<<config-corosync,「corosync設定ファイルの設定」>>、<<config-init,「クラスタ起動スクリプトの設定」>>の差分に注意してもらえればそのまま適用可能です。
-
-* http://linux-ha.osdn.jp/wp/archives/4038[OSC2014 Tokyo/Fall セミナー資料・アンケート結果公開]
-* http://linux-ha.osdn.jp/wp/archives/4098[OSC2015 Nagoya セミナー資料・アンケート結果公開]
-
+より具体的な構成例・利用手順については、<<applications,「応用事例」>>の章に参考情報を記載しています。
 
 == ダウンロード
 
 Pacemaker-1.1.17-1.1リポジトリパッケージのリリース版は以下のページよりダウンロードできます。
 
-* https://osdn.net/projects/linux-ha/releases/XXXXX[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.17-1.1]
+* https://osdn.net/projects/linux-ha/releases/69021[Pacemakerリポジトリパッケージ (RHEL 7) 1.1.17-1.1]
 
-* https://osdn.net/projects/linux-ha/releases/XXXXX[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.17-1.1]
+* https://osdn.net/projects/linux-ha/releases/69022[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.17-1.1]
 
 * 対応環境: RHEL 6 / RHEL 7 および互換OS、x86_64環境
 * _※ RHEL 6.5以前の環境では、以下の Errata 適用が必須です。_
@@ -327,13 +322,44 @@ pm_crmgen pm_logconv-cs pm_diskd pm_extras crmsh pssh
 # 
 ----------------------------------------------------------------
 
+[[applications]]
+== 応用事例
+=== 基本構成例
+
+Pacemakerを使った具体的な高可用クラスタ構成例・利用手順として、以下のOSCのセミナー資料が非常に参考になります。
+これらのセミナー資料は Pacemaker-1.1.12-1.1を使った例ですが、<<config-corosync,「corosync設定ファイルの設定」>>、<<config-init,「クラスタ起動スクリプトの設定」>>の差分に注意してもらえればそのまま適用可能です。
+
+* OSCセミナー資料
+** http://linux-ha.osdn.jp/wp/archives/4038[すぐに始められる！最新のPacemakerで始める高可用クラスタ入門 (OSC2014 Tokyo/Fall)]
+** http://linux-ha.osdn.jp/wp/archives/4098[Pacemaker-1.1で始める高可用クラスタ入門 ～私が落ちても代わりはいるもの～ (OSC2015 Nagoya)]
+
+=== PG-REX
+
+PG-REXは、PacemakerとPostgreSQLレプリケーション機能を組み合わせたソリューションです。
+非共有ディスク型の高可用データベースが構築できます。
+
+* PG-REXプロジェクトホームページ
+** https://osdn.net/projects/pg-rex/
+* OSCセミナー資料
+** http://linux-ha.osdn.jp/wp/archives/4627[試して覚えるPacemaker入門 PG-REX構築 (OSC2017 Kyoto)]
+** http://linux-ha.osdn.jp/wp/archives/4664[試して覚えるPacemaker入門 PG-REX運用 (OSC2018 Osaka)]
+
 [[ansible]]
 == Ansible Playbook 例 ==
+
+=== Pacemaker リポジトリパッケージ用 Playbook
 
 上記2章から7章までの手順を Ansible で自動化した Playbook の例です。
 詳細はリンク先の README.md を参照してください。
 
 * https://github.com/kskmori/ansible-pacemaker/[Pacemaker リポジトリパッケージ用 Ansible Playbook]
+
+=== PG-REX用 playbook
+
+PG-REXプロジェクトのドキュメントの手順を Ansible で自動化した Playbook の例です。
+前項の Pacemaker リポジトリパッケージ用 Playbook と組み合わせて利用します。
+
+* https://github.com/kskmori/ansible-pgrex/[PG-REX用 Ansible Playbook]
 
 
 [[releasenotes]]
