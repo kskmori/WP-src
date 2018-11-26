@@ -1,4 +1,6 @@
 = CentOS 7 で Pacemaker を利用する場合の注意点
+:toc:
+:numbered:
 
 == CentOS 7 で Pacemaker を利用する場合の注意点
 

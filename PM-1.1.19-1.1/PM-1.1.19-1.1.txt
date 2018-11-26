@@ -38,6 +38,10 @@ Pacemaker-1.1.19-1.1リポジトリパッケージのリリース版は以下の
 Pacemaker インストール時に必要な依存パッケージも自動的にインストールできるようにするため、
 あらかじめ OS のインストールメディア等が参照できるようにしておきます。
 
+CentOS上にインストールする場合は以下の追加設定も行ってください。
+
+=== リポジトリ追加設定(CentOS のみ)
+
 CentOS上にインストールする場合、CentOS 同梱版の Pacemaker と混在してしまわないように
 以下の +exclude+ 設定を追加します。
 
@@ -51,6 +55,20 @@ exclude=pacemaker* corosync* resource-agents* crmsh* cluster-glue* libqb* fence-
 (...)
 exclude=pacemaker* corosync* resource-agents* crmsh* cluster-glue* libqb* fence-agents* pcs*
 ----------------------------------------------------------------
+
+=== 必須パッケージインストール(CentOS 7のみ)
+
+CentOS 7 上にインストールする場合、+NetworkManager-config-server+ パッケージを
+インストールして、+NetworkManager+ を再起動してください。
+
+----------------------------------------------------------------
+# yum install -y NetworkManager-config-server
+# systemctl restart NetworkManager
+----------------------------------------------------------------
+
+* 補足
+** RHEL 7 では +NetworkManager-config-server+ パッケージは標準で必ずインストールされるため特別な手順は不要です。
+** 詳細については別記事 http://linux-ha.osdn.jp/wp/?p=4798[CentOS 7 で Pacemaker を利用する場合の注意点] を参照してください。
 
 == インストール
 
