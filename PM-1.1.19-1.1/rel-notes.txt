@@ -65,6 +65,7 @@ Pacemaker-1.1.17-1.1からの主な差分について記載します。
 ** ホスト名に大文字が含まれる環境で、PG-REX構成が起動しない等の問題が修正されました(1.1.17-1.1で発生した問題)。
 ** sosreport コマンドで pacemaker 設定が取得できない問題が修正されました。
 * corosync-2.4.4-1
+** CVE-2018-1084 の問題が修正されました。 
 ** SNMP トラップでコミュニティ名を指定するオプション(corosync-notifyd -c <community name>)が追加されました。
 ** corosync プロセスの優先度(nice 値)を指定するオプション(corosync -P <num>)が追加されました。
 ** bind が失敗し続けると corosync プロセス が CPU を 100% 使用する問題が修正されました。
@@ -72,7 +73,7 @@ Pacemaker-1.1.17-1.1からの主な差分について記載します。
 ** RHEL6環境で時刻補正を行うとcorosyncが通信異常を誤検知する問題が修正されました(1.1.17-1.1で発生した問題)。
 * resource-agents-4.1.1-1
 ** IPaddr2:
-*** send_arp の代わりに arping -A を実行するなどを指定可能とするオプション(send_arp_opts)が追加されました。
+*** send_arp の代わりに arping -A を実行するなどがオプション(arp_sender, send_arp_opts)で指定可能となりました。
 *** IPv6 アドレスの VIP をソースアドレスとして使用しないようにするオプション(preferred_lft)が追加されました。
 ** pgsql:
 *** PostgreSQL 11 以降で promote できない問題が修正されました。
