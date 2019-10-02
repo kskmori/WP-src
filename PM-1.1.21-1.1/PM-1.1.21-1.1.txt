@@ -6,14 +6,14 @@ Pacemaker-1.1.21-1.1 リポジトリパッケージをリリースしました�
 
 このページの変更履歴
 
-* 2019.10.01 Pacemaker-1.1.21-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
+* 2019.10.02 Pacemaker-1.1.21-1.1(RHEL6/RHEL7用)リポジトリパッケージリリース
 
 == Pacemaker-1.1.21-1.1 の概要
 
 
-Pacemaker-1.1.21-1.1 リポジトリパッケージは、前回のリリース版 http://linux-ha.osdn.jp/wp/archives/4802[Pacemaker-1.1.19-1.1リポジトリパッケージ] からバグ修正等が行われたマイナーバージョンアップ版です。
+Pacemaker-1.1.21-1.1 リポジトリパッケージは、前回のリリース版 http://linux-ha.osdn.jp/wp/archives/4802[Pacemaker-1.1.19-1.1リポジトリパッケージ] からセキュリティ修正を含むバグ修正等が行われたマイナーバージョンアップ版です。
 
-利用方法は従来の 1.1.19-1.1 から変更はありません。1.1.19-1.1 と同一の設定で利用可能です。主な差分・改善点については<<changelog,「1.1.19-1.1 からの主な差分」>>の項を参照してください。
+利用方法は従来の 1.1.19-1.1 から変更はありません。1.1.19-1.1 と同一の設定で利用可能です。ただし一部の環境ではErrata適用が必須となります。詳細は<<download,「ダウンロード」>>の項を参照してください。その他の主な差分・改善点については<<changelog,「1.1.19-1.1 からの主な差分」>>の項を参照してください。
 
 なお、Pacemaker-1.1.20 をベースとしたリポジトリパッケージのリリースはありません。今回の 1.1.21-1.1 リリースが 1.1.19-1.1 の次のリリースとなります。
 
@@ -21,6 +21,7 @@ Pacemaker-1.1.21-1.1 リポジトリパッケージは、前回のリリース�
 
 より具体的な構成例・利用手順については、<<applications,「応用事例」>>の章に参考情報を記載しています。
 
+[[download]]
 == ダウンロード
 
 Pacemaker-1.1.21-1.1リポジトリパッケージのリリース版は以下のページよりダウンロードできます。
@@ -29,11 +30,15 @@ Pacemaker-1.1.21-1.1リポジトリパッケージのリリース版は以下の
 
 * https://osdn.net/projects/linux-ha/releases/71664[Pacemakerリポジトリパッケージ (RHEL 6) 1.1.21-1.1]
 
+
 * 対応環境: RHEL 6 / RHEL 7 および互換OS、x86_64環境
+* _※ RHEL 7.4以前の環境では、以下の Errata 適用が必須です。_
+** https://access.redhat.com/errata/RHBA-2018:0765[RHBA-2018:0765 dbus bug fix update] 以降
+** RHEL 7.1以前の環境ではこれに依存してさらに複数のErrata適用が必須となるので注意してください。
 * _※ RHEL 6.8以前の環境では、以下の Errata 適用が必須です。_
-** https://access.redhat.com/errata/RHSA-2017:0574[RHSA-2017:0574 Moderate: gnutls security, bug fix, and enhancement update]
+** https://access.redhat.com/errata/RHSA-2017:0574[RHSA-2017:0574 Moderate: gnutls security, bug fix, and enhancement update] 以降
 * _※ RHEL 6.5以前の環境では、以下の Errata 適用が必須です。_
-** https://access.redhat.com/errata/RHBA-2014:1538[RHBA-2014:1538 glib2 bug fix and enhancement update]
+** https://access.redhat.com/errata/RHBA-2014:1538[RHBA-2014:1538 glib2 bug fix and enhancement update] 以降
 
 == インストール前の準備
 
